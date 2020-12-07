@@ -1,5 +1,5 @@
 import React, { useState , useEffect } from 'react'
-import { useSpring, animated } from 'react-spring';
+import { useSpring, animated, config } from 'react-spring';
 import { render } from 'react-dom'
 import axios from 'axios'
 import Quote from './Quote'
@@ -18,11 +18,13 @@ export default function App(){
     getQuotes()
   }, [])
 
-  const {opacity, top , absolute, transform, subTop} = useSpring({
+  const {opacity, top , absolute, transform, marginLeft} = useSpring({
     opacity: isLoading ? 0.5 : 1,
     top: stateAuthor ? '120px' : '0px',
     absolute: stateAuthor ? 'absolute' : '',
-    transform: `rotate(${roll ? 360 : 0}deg)`
+    transform: `rotate(${roll ? 360 : 0}deg)`,
+    marginLeft: isLoading ? '-200px' : '0px',
+    config: config.stiff
   })
 
   async function getQuotes(){
@@ -69,8 +71,8 @@ export default function App(){
           })}
         </animated.div>
         <animated.div className="info" onClick={() => getAuthor(author)} style={{opacity: opacity, position: absolute}}>
-          <div className="author" >{author}</div>
-          <div className="genre">{genre}</div>
+          <animated.div className="author" style={{ marginLeft: marginLeft }}>{author}</animated.div>
+          <animated.div className="genre" style={{ marginLeft: marginLeft }}>{genre}</animated.div>
         </animated.div>
       </div>
     </>
